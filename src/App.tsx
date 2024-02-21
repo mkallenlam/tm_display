@@ -68,12 +68,6 @@ function App() {
     setData(data);
   }
 
-  const onValidationError = (error: any) => {
-    if(error?.length > 0) {
-      setJsonErrorMessage(getErrorMessage('validJson'));
-    }
-  }
-
   const onChangeRows = (value: string) => {
     validateRow(value);
     setRows(value);
@@ -85,9 +79,9 @@ function App() {
     if(!Array.isArray(data)) errorType = 'validJson';
     else if(data?.length > 50) errorType = 'length';
     for(let item of data) {
-      if(item.name == undefined || item.weight == undefined || item.value == undefined) errorType = 'validJson';
-      else if(item.name.length > 50) errorType = 'nameLength';
-      else if(typeof item.weight !== 'number') errorType = 'weightNumber';
+      if(item.name === undefined || item.weight === undefined || item.value === undefined) errorType = 'validJson';
+      else if(item.name.length >= 50) errorType = 'nameLength';
+      else if(typeof item.weight !== 'number' || !Number.isInteger(item.weight)) errorType = 'weightNumber';
       else if(typeof item.value !== 'number') errorType = 'valueNumber';
       else if(typeof item.name !== 'string') errorType = 'nameString';
 
@@ -102,7 +96,7 @@ function App() {
   const validateRow = (value: string, nextData?: TreemapData[]) => {
     let errorType:string = ''
 
-    if(value == '' || parseInt(value) < 1 || parseInt(value) > (nextData ?nextData.length :data.length)) errorType = 'validRows';
+    if(value === '' || parseInt(value) < 1 || parseInt(value) > (nextData ?nextData.length :data.length)) errorType = 'validRows';
 
     setRowsErrorMessage(getErrorMessage(errorType));
     
