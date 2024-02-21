@@ -46,9 +46,15 @@ export const Block = styled(FlexColumn)`
 export const BlockTitle = styled(FlexRow)`
   color: ${props => props.theme.colors.text};
   font-size: ${props => props.theme.size.blockTitle};
-  margin-bottom: ${props => props.theme.size.size3};
+  margin-bottom: ${props => props.theme.size.size1};
   align-items: flex-start;
   font-weight: bold;
+`
+
+export const BlockPs = styled.div`
+  color: ${props => props.theme.colors.psText};
+  font-size: ${props => props.theme.size.size3};
+  margin-bottom: ${props => props.theme.size.size3};
 `
 
 export const Input = styled.input`
@@ -88,6 +94,12 @@ export const FloatLabel = styled.label`
   font-weight: bold;
 `
 
+export const ErrorMessage = styled.div`
+  color: ${props => props.theme.colors.errorText};
+  font-size: ${props => props.theme.size.size3};
+  margin-top: ${props => props.theme.size.size3};
+`
+
 // ======================== Treemap ========================
 export const TreemapView = styled(FlexColumn)`
   gap: ${props => props.theme.size.treemapGap};
@@ -101,13 +113,13 @@ export const TreemapRow = styled(FlexRow)<{ height: number }>`
   align-items: center;
 ` 
 
-export const TreemapItem = styled.a<{ width: string, height: number, value: number, zIndex: number }>`
+export const TreemapItem = styled.a<{ width: string, height: number, value: number, zindex: number }>`
   width: ${props => props.width};
   height: ${props => props.height}px;
   color: ${props => props.theme.colors.text};
-  background-color: ${props => props.value > 0 ? props.theme.colors.treemapGreen : props.theme.colors.treemapRed};
+  background-color: ${props => props.value > 0 ?props.theme.colors.treemapGreen :(props.value < 0 ?props.theme.colors.treemapRed :props.theme.colors.treemapGrey)};
   outline: ${props => props.theme.size.treemapGap} solid ${props => props.theme.colors.foreground};
-  z-index: ${props => props.zIndex};
+  z-index: ${props => props.zindex};
   display: flex;
   flex-direction: column;
   align-items: center;

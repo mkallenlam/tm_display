@@ -12,7 +12,7 @@ declare module 'jsoneditor-react' {
     /** Initial field name for root node */
     name?: string;
     /** Validate the JSON object against a JSON schema. */
-    scheme?: any;
+    scheme: any;
     /** Schemas that are referenced using the $ref property */
     schemaRefs?: object;
     /**
@@ -69,5 +69,7 @@ declare module 'jsoneditor-react' {
     htmlElementProps?: object;
     /** callback to get html element reference */
     innerRef?: (ref: any) => void;
+
+    onValidationError?: (error: any) => void;
   }
 }

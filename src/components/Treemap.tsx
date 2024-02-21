@@ -30,7 +30,7 @@ const ZoomControl = ({ zoomIn, zoomOut, resetTransform }: { zoomIn: any, zoomOut
     <TreemapZoomControlView>
       <TreemapZoomControlButton onClick={() => zoomIn()}>+</TreemapZoomControlButton>
       <TreemapZoomControlButton onClick={() => zoomOut()}>-</TreemapZoomControlButton>
-      <TreemapZoomControlButton onClick={() => resetTransform()}>Reset</TreemapZoomControlButton>
+      <TreemapZoomControlButton onClick={() => resetTransform()}>Reset Scale</TreemapZoomControlButton>
     </TreemapZoomControlView>
   )
 }
@@ -68,7 +68,7 @@ const Treemap = ({ data, rows }: TreemapProps) => {
                         width={itemWidth}
                         height={rowHeight}
                         value={item.value}
-                        zIndex={row.length - itemIndex}
+                        zindex={row.length - itemIndex}
                       >
                         <TreemapKeepScale>
                           <TreemapTitle>{item.name}</TreemapTitle>
