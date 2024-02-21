@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { 
   GlobalStyle, Container, EmptySpace,
   Block, BlockTitle, Input, Button, FloatLabel
 } from './style/styles';
 import { JsonEditor as Editor } from 'jsoneditor-react';
 import ace from 'brace';
-// import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import Treemap from './components/Treemap';
 
@@ -23,6 +22,7 @@ const TEMPLATE_DATA = [
 
 
 function App() {
+  const treemapRef = useRef<HTMLDivElement>(null);
   const [ data, setData ] = useState<TreemapData[]>(TEMPLATE_DATA);
   const [ rows, setRows ] = useState<number>(3);
   const [ submitData, setSubmitData ] = useState<TreemapProps>();
@@ -57,7 +57,9 @@ function App() {
   }
 
   const toggleDraw = () => {
-    setSubmitData({ data, rows: rows });
+    setSubmitData({ data, rows: rows })
+    setTimeout(() => treemapRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+    ;
   }
 
   return (
@@ -82,7 +84,7 @@ function App() {
 
         <Button onClick={toggleDraw}>Draw</Button>
 
-        <Block>
+        <Block ref={treemapRef}>
           <FloatLabel>TreeMap</FloatLabel>
           <EmptySpace height={40}/>
           { submitData && <Treemap data={submitData.data} rows={submitData.rows} /> }

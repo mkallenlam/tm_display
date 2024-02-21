@@ -1,6 +1,7 @@
+import { Fragment } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-import { TreemapView, TreemapRow, TreemapItem, TreemapTitle, TreemapPercentage, TreemapTooltip, TreemapTooltipInner, TreemapKeepScale } from '../style/styles';
+import { TreemapView, TreemapRow, TreemapItem, TreemapTitle, TreemapPercentage, TreemapTooltip, TreemapTooltipInner, TreemapKeepScale, TreemapZoomControlView, TreemapZoomControlButton } from '../style/styles';
 import { hp } from '../utils/function';
 
 import 'react-tooltip/dist/react-tooltip.css'
@@ -24,6 +25,16 @@ const distributeItemsIntoRows = (data: TreemapData[], rows: number) => {
   return { distributedRows, maxRowWeight: Math.max(...rowWeights) };
 };
 
+const ZoomControl = ({ zoomIn, zoomOut, resetTransform }: { zoomIn: any, zoomOut: any, resetTransform: any }) => {
+  return (
+    <TreemapZoomControlView>
+      <TreemapZoomControlButton onClick={() => zoomIn()}>+</TreemapZoomControlButton>
+      <TreemapZoomControlButton onClick={() => zoomOut()}>-</TreemapZoomControlButton>
+      <TreemapZoomControlButton onClick={() => resetTransform()}>Reset</TreemapZoomControlButton>
+    </TreemapZoomControlView>
+  )
+}
+
 const Treemap = ({ data, rows }: TreemapProps) => {
   const rowHeight = Math.min(150, hp(70) / rows); // Show the whole treemap without scrolling
   const {distributedRows, maxRowWeight} = distributeItemsIntoRows(data, rows);
@@ -32,41 +43,50 @@ const Treemap = ({ data, rows }: TreemapProps) => {
     <>
       <TransformWrapper
         wheel={{ disabled: true }}
+        minScale={1}
+        maxScale={3}
       >
-      <TransformComponent>
-      <TreemapView>
-        {distributedRows.map((row, rowIndex) => (
-          <TreemapRow height={rowHeight} key={rowIndex}>
-            {row.map((item, itemIndex) => {
-              // Calculate the width of the item based on the max item weight of a row and the item weight
-              const itemWidth = `calc(${item.weight} / ${maxRowWeight} * 100%)`
-              return (
-                <TreemapItem
-                  data-tooltip-id={"treemap-tooltip"}
-                  data-tooltip-content={`${item.name}: ${Math.round(item.value * 10000) / 100}%`}
-                  data-tooltip-name={item.name}
-                  data-tooltip-value={Math.round(item.value * 10000) / 100}
-                  data-tooltip-place="right"
-                  data-tooltip-offset={20}
-                  key={itemIndex}
-                  width={itemWidth}
-                  height={rowHeight}
-                  value={item.value}
-                  zIndex={row.length - itemIndex}
-                >
-                  <TreemapKeepScale>
-                    <TreemapTitle>{item.name}</TreemapTitle>
-                    <TreemapPercentage type={item.value > 0 ?1 :(item.value < 0 ?-1 :0)}>{(item.value > 0 ?'+' :'') + Math.round(item.value * 10000) / 100}%</TreemapPercentage>
-                  </TreemapKeepScale>
-                </TreemapItem>
-              );
-            })}
-          </TreemapRow>
-        ))}
-        
-      </TreemapView>
-      </TransformComponent>
+        {({ zoomIn, zoomOut, resetTransform })  => (
+          <Fragment>
+            <ZoomControl zoomIn={zoomIn} zoomOut={zoomOut} resetTransform={resetTransform} />
+            <TransformComponent>
+            <TreemapView>
+              {distributedRows.map((row, rowIndex) => (
+                <TreemapRow height={rowHeight} key={rowIndex}>
+                  {row.map((item, itemIndex) => {
+                    // Calculate the width of the item based on the max item weight of a row and the item weight
+                    const itemWidth = `calc(${item.weight} / ${maxRowWeight} * 100%)`
+                    return (
+                      <TreemapItem
+                        data-tooltip-id={"treemap-tooltip"}
+                        data-tooltip-content={`${item.name}: ${Math.round(item.value * 10000) / 100}%`}
+                        data-tooltip-name={item.name}
+                        data-tooltip-value={Math.round(item.value * 10000) / 100}
+                        data-tooltip-place="right"
+                        data-tooltip-offset={20}
+                        key={itemIndex}
+                        width={itemWidth}
+                        height={rowHeight}
+                        value={item.value}
+                        zIndex={row.length - itemIndex}
+                      >
+                        <TreemapKeepScale>
+                          <TreemapTitle>{item.name}</TreemapTitle>
+                          <TreemapPercentage type={item.value > 0 ?1 :(item.value < 0 ?-1 :0)}>{(item.value > 0 ?'+' :'') + Math.round(item.value * 10000) / 100}%</TreemapPercentage>
+                        </TreemapKeepScale>
+                      </TreemapItem>
+                    );
+                  })}
+                </TreemapRow>
+              ))}
+              
+            </TreemapView>
+            </TransformComponent>
+          </Fragment>
+        )}
       </TransformWrapper>
+
+     
       
       <TreemapTooltip id="treemap-tooltip" border="1px solid #404040" 
         render={({ activeAnchor }) => {

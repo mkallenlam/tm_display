@@ -21,34 +21,34 @@ export const FlexRow = styled.div`
 `
 
 export const EmptySpace = styled.div<{ height?: number }>`
-  width: 100%;
   height: ${props => props.height || props.theme.size.size4}px;
+  width: 100%;
 `;
 
 // ======================== Dashboard ========================
 export const Container = styled(FlexColumn)`
+  padding: ${props => props.theme.size.size4} 0;
+  gap: ${props => props.theme.size.size7};
   margin: 0 auto;
   width: 80vw;
   max-width: 1280px;
-  padding: ${props => props.theme.size.size4} 0;
-  gap: ${props => props.theme.size.size7};
 `;
 
 export const Block = styled(FlexColumn)`
-  position: relative;
-  margin: 0 0;
   background-color: ${props => props.theme.colors.foreground};
   padding: ${props => props.theme.size.size4};
   border: ${props => props.theme.size.blockBorderWidth} solid ${props => props.theme.colors.borderPrimary};
   border-radius: ${props => props.theme.size.blockRadius};
+  position: relative;
+  margin: 0 0;
 `;
 
 export const BlockTitle = styled(FlexRow)`
-  align-items: flex-start;
   color: ${props => props.theme.colors.text};
   font-size: ${props => props.theme.size.blockTitle};
-  font-weight: bold;
   margin-bottom: ${props => props.theme.size.size3};
+  align-items: flex-start;
+  font-weight: bold;
 `
 
 export const Input = styled.input`
@@ -78,21 +78,21 @@ export const Button = styled.button`
 `
 
 export const FloatLabel = styled.label`
-  position: absolute;
-  top: 0;
-  left: 0;
   padding: ${props => props.theme.size.size2} ${props => props.theme.size.size3};
   color: ${props => props.theme.colors.text};
   font-size: ${props => props.theme.size.blockTitle};
-  font-weight: bold;
   border: ${props => props.theme.size.blockBorderWidth} solid ${props => props.theme.colors.borderPrimary};
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: bold;
 `
 
 // ======================== Treemap ========================
 export const TreemapView = styled(FlexColumn)`
-  width: calc(80vw - 38px);
   gap: ${props => props.theme.size.treemapGap};
   padding: ${props => props.theme.size.treemapGap};
+  width: calc(80vw - 38px);
 `
 
 export const TreemapRow = styled(FlexRow)<{ height: number }>`
@@ -102,6 +102,12 @@ export const TreemapRow = styled(FlexRow)<{ height: number }>`
 ` 
 
 export const TreemapItem = styled.a<{ width: string, height: number, value: number, zIndex: number }>`
+  width: ${props => props.width};
+  height: ${props => props.height}px;
+  color: ${props => props.theme.colors.text};
+  background-color: ${props => props.value > 0 ? props.theme.colors.treemapGreen : props.theme.colors.treemapRed};
+  outline: ${props => props.theme.size.treemapGap} solid ${props => props.theme.colors.foreground};
+  z-index: ${props => props.zIndex};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,12 +117,6 @@ export const TreemapItem = styled.a<{ width: string, height: number, value: numb
   white-space: nowrap;
   text-overflow: ellipsis;
   cursor: pointer;
-  width: ${props => props.width};
-  height: ${props => props.height}px;
-  color: ${props => props.theme.colors.text};
-  background-color: ${props => props.value > 0 ? props.theme.colors.treemapGreen : props.theme.colors.treemapRed};
-  outline: ${props => props.theme.size.treemapGap} solid ${props => props.theme.colors.foreground};
-  z-index: ${props => props.zIndex};
   &:hover {
     outline: ${props => props.theme.size.treemapGap} solid ${props => props.theme.colors.primary};
     z-index: 300;
@@ -125,9 +125,9 @@ export const TreemapItem = styled.a<{ width: string, height: number, value: numb
 
 export const TreemapTitle = styled.div`
   font-size: ${props => props.theme.size.size4};
-  font-weight: bold;
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.size.size1};
+  font-weight: bold;
 `
 
 export const TreemapPercentage = styled(TreemapTitle)<{ type: number }>`
@@ -153,4 +153,30 @@ export const TreemapKeepScale = styled(KeepScale)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`
+
+export const TreemapZoomControlView = styled(FlexRow)`
+  gap: ${props => props.theme.size.treemapGap};
+  padding: ${props => props.theme.size.size3};
+  position: absolute;
+  top: 0;
+  right: 3px;
+  z-index: 1000;
+`
+
+export const TreemapZoomControlButton = styled.button`
+  padding: ${props => props.theme.size.size2};
+  font-size: ${props => props.theme.size.size4};
+  background-color: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
+  min-width: 30px;
+  min-height: 30px;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+  &:active {
+    opacity: 0.6;
+  }
 `
